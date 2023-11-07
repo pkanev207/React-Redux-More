@@ -8,7 +8,7 @@ export default function NextButton({ dispatch, answer, index, numQuestions }) {
         className="btn btn-ui"
         onClick={() => dispatch({ type: "nextQuestion" })}
       >
-        Next Button
+        Next
       </button>
     );
 

@@ -1,8 +1,8 @@
 import { useEffect, useReducer } from "react";
-
+// As one component rerenders - all his child components will rerender as well
 import Header from "./components/Header.jsx";
-// import DateCounter from "./components/DateCounter.jsx";
-// import Location from "./components/Location.jsx";
+import DateCounter from "./components/DateCounter.jsx";
+import Location from "./components/Location.jsx";
 import Main from "./components/Main.jsx";
 import StartScreen from "./components/StartScreen.jsx";
 import Question from "./components/Question.jsx";
@@ -11,7 +11,11 @@ import Progress from "./components/Progress.jsx";
 import Loader from "./components/Loader.jsx";
 import Error from "./components/Error.jsx";
 import FinishScreen from "./components/FinishScreen.jsx";
+import Timer from "./components/Timer.jsx";
+import Footer from "./components/Footer.jsx";
 import "./App.css";
+
+const SECS_PER_QUESTION = 30;
 
 const initialState = {
   // using the different statuses to decide what will be display in the main part of the app
@@ -23,6 +27,7 @@ const initialState = {
   answer: null,
   points: 0,
   highscore: 0,
+  secondsRemaining: null,
 };
 
 // whenever is possible we should put more of the logic for
@@ -36,7 +41,11 @@ function reducer(state, action) {
       console.error(action.payload);
       return { ...state, status: "error" };
     case "start":
-      return { ...state, status: "active" };
+      return {
+        ...state,
+        status: "active",
+        secondsRemaining: state.questions.length * SECS_PER_QUESTION,
+      };
     case "newAnswer":
       const question = state.questions.at(state.index);
       return {
@@ -56,14 +65,24 @@ function reducer(state, action) {
         highscore:
           state.points > state.highscore ? state.points : state.highscore,
       };
+    case "restart":
+      return { ...initialState, questions: state.questions, status: "ready" };
+    case "tick":
+      return {
+        ...state,
+        secondsRemaining: state.secondsRemaining - 1,
+        status: state.secondsRemaining === 0 ? "finished" : state.status,
+      };
     default:
       throw new Error("Action unknown");
   }
 }
 
 export default function App() {
-  const [{ questions, status, index, answer, points, highscore }, dispatch] =
-    useReducer(reducer, initialState);
+  const [
+    { questions, status, index, answer, points, highscore, secondsRemaining },
+    dispatch,
+  ] = useReducer(reducer, initialState);
 
   // derived state - we can just computed it from other elements
   const numQuestions = questions.length;
@@ -84,13 +103,6 @@ export default function App() {
     <div className="app">
       <Header />
       <Main>
-        <Progress
-          answer={answer}
-          index={index}
-          numQuestions={numQuestions}
-          points={points}
-          maxPossiblePoints={maxPossiblePoints}
-        />
         {/* status values are mutually exclusive, so we don't need ternary operators */}
         {status === "loading" && <Loader />}
         {status === "error" && <Error />}
@@ -99,29 +111,41 @@ export default function App() {
         )}
         {status === "active" && (
           <>
+            <Progress
+              answer={answer}
+              index={index}
+              numQuestions={numQuestions}
+              points={points}
+              maxPossiblePoints={maxPossiblePoints}
+            />
             <Question
               dispatch={dispatch}
               answer={answer}
               question={questions[index]}
             />
-            <NextButton
-              dispatch={dispatch}
-              answer={answer}
-              index={index}
-              numQuestions={numQuestions}
-            />
+            {/* component composition */}
+            <Footer>
+              <Timer dispatch={dispatch} secondsRemaining={secondsRemaining} />
+              <NextButton
+                dispatch={dispatch}
+                answer={answer}
+                index={index}
+                numQuestions={numQuestions}
+              />
+            </Footer>
           </>
         )}
         {status === "finished" && (
           <FinishScreen
+            dispatch={dispatch}
             points={points}
             maxPossiblePoints={maxPossiblePoints}
             highscore={highscore}
           />
         )}
-        {/* <DateCounter /> */}
-        {/* <Location /> */}
       </Main>
+      {/* <DateCounter />/ */}
+      {/* <Location /> */}
     </div>
   );
 }
