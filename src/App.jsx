@@ -1,4 +1,3 @@
-/* eslint-disable no-case-declarations */
 import { useEffect, useReducer } from "react";
 
 import Header from "./components/Header.jsx";
@@ -7,6 +6,8 @@ import Header from "./components/Header.jsx";
 import Main from "./components/Main.jsx";
 import StartScreen from "./components/StartScreen.jsx";
 import Question from "./components/Question.jsx";
+import NextButton from "./components/NextButton.jsx";
+import Progress from "./components/Progress.jsx";
 import Loader from "./components/Loader.jsx";
 import Error from "./components/Error.jsx";
 import "./App.css";
@@ -17,6 +18,7 @@ const initialState = {
   status: "loading",
   questions: [],
   index: 0,
+  // try to use the initial state
   answer: null,
   points: 0,
 };
@@ -35,7 +37,6 @@ function reducer(state, action) {
       return { ...state, status: "active" };
     case "newAnswer":
       const question = state.questions.at(state.index);
-
       return {
         ...state,
         answer: action.payload,
@@ -44,17 +45,25 @@ function reducer(state, action) {
             ? state.points + Number(question.points)
             : state.points,
       };
+    case "nextQuestion":
+      return { ...state, index: state.index + 1, answer: null };
     default:
       throw new Error("Action unknown");
   }
 }
 
 export default function App() {
-  const [{ questions, status, index, answer }, dispatch] = useReducer(
+  const [{ questions, status, index, answer, points }, dispatch] = useReducer(
     reducer,
     initialState
   );
+
+  // derived state - we can just computed it from other elements
   const numQuestions = questions.length;
+  const maxPossiblePoints = questions.reduce(
+    (prev, cur) => prev + cur.points,
+    0
+  );
 
   useEffect(function () {
     fetch("http://localhost:8000/questions")
@@ -68,6 +77,13 @@ export default function App() {
     <div className="app">
       <Header />
       <Main>
+        <Progress
+          index={index}
+          numQuestions={numQuestions}
+          points={points}
+          maxPossiblePoints={maxPossiblePoints}
+          answer={answer}
+        />
         {/* status values are mutually exclusive, so we don't need ternary operators */}
         {status === "loading" && <Loader />}
         {status === "error" && <Error />}
@@ -75,11 +91,14 @@ export default function App() {
           <StartScreen numQuestions={numQuestions} dispatch={dispatch} />
         )}
         {status === "active" && (
-          <Question
-            question={questions[index]}
-            dispatch={dispatch}
-            answer={answer}
-          />
+          <>
+            <Question
+              question={questions[index]}
+              dispatch={dispatch}
+              answer={answer}
+            />
+            <NextButton dispatch={dispatch} answer={answer} />
+          </>
         )}
         {/* <DateCounter /> */}
         {/* <Location /> */}
@@ -87,3 +106,33 @@ export default function App() {
     </div>
   );
 }
+
+// package.json with ESLint - config is in the data folder
+// {
+//   "name": "usegeoloction",
+//   "private": true,
+//   "version": "0.0.0",
+//   "type": "module",
+//   "scripts": {
+//     "dev": "vite",
+//     "build": "vite build",
+//     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+//     "preview": "vite preview",
+//     "server": "json-server --watch data/questions.json --port 8000"
+//   },
+//   "dependencies": {
+//     "json-server": "^0.17.4",
+//     "react": "^18.2.0",
+//     "react-dom": "^18.2.0"
+//   },
+//   "devDependencies": {
+//     "@types/react": "^18.2.15",
+//     "@types/react-dom": "^18.2.7",
+//     "@vitejs/plugin-react": "^4.0.3",
+//     "eslint": "^8.45.0",
+//     "eslint-plugin-react": "^7.32.2",
+//     "eslint-plugin-react-hooks": "^4.6.0",
+//     "eslint-plugin-react-refresh": "^0.4.3",
+//     "vite": "^4.4.5"
+//   }
+// }

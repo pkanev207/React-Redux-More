@@ -16,8 +16,7 @@ export default function Options({ question, dispatch, answer }) {
           key={crypto.randomUUID()}
           disabled={answer != null}
           onClick={(e) => {
-            e.preventDefault();
-            console.log(index);
+            // e.preventDefault();
             dispatch({ type: "newAnswer", payload: index });
           }}
         >
