@@ -10,6 +10,7 @@ import NextButton from "./components/NextButton.jsx";
 import Progress from "./components/Progress.jsx";
 import Loader from "./components/Loader.jsx";
 import Error from "./components/Error.jsx";
+import FinishScreen from "./components/FinishScreen.jsx";
 import "./App.css";
 
 const initialState = {
@@ -21,6 +22,7 @@ const initialState = {
   // try to use the initial state
   answer: null,
   points: 0,
+  highscore: 0,
 };
 
 // whenever is possible we should put more of the logic for
@@ -47,16 +49,21 @@ function reducer(state, action) {
       };
     case "nextQuestion":
       return { ...state, index: state.index + 1, answer: null };
+    case "finish":
+      return {
+        ...state,
+        status: "finished",
+        highscore:
+          state.points > state.highscore ? state.points : state.highscore,
+      };
     default:
       throw new Error("Action unknown");
   }
 }
 
 export default function App() {
-  const [{ questions, status, index, answer, points }, dispatch] = useReducer(
-    reducer,
-    initialState
-  );
+  const [{ questions, status, index, answer, points, highscore }, dispatch] =
+    useReducer(reducer, initialState);
 
   // derived state - we can just computed it from other elements
   const numQuestions = questions.length;
@@ -78,27 +85,39 @@ export default function App() {
       <Header />
       <Main>
         <Progress
+          answer={answer}
           index={index}
           numQuestions={numQuestions}
           points={points}
           maxPossiblePoints={maxPossiblePoints}
-          answer={answer}
         />
         {/* status values are mutually exclusive, so we don't need ternary operators */}
         {status === "loading" && <Loader />}
         {status === "error" && <Error />}
         {status === "ready" && (
-          <StartScreen numQuestions={numQuestions} dispatch={dispatch} />
+          <StartScreen dispatch={dispatch} numQuestions={numQuestions} />
         )}
         {status === "active" && (
           <>
             <Question
-              question={questions[index]}
               dispatch={dispatch}
               answer={answer}
+              question={questions[index]}
             />
-            <NextButton dispatch={dispatch} answer={answer} />
+            <NextButton
+              dispatch={dispatch}
+              answer={answer}
+              index={index}
+              numQuestions={numQuestions}
+            />
           </>
+        )}
+        {status === "finished" && (
+          <FinishScreen
+            points={points}
+            maxPossiblePoints={maxPossiblePoints}
+            highscore={highscore}
+          />
         )}
         {/* <DateCounter /> */}
         {/* <Location /> */}
@@ -107,7 +126,7 @@ export default function App() {
   );
 }
 
-// package.json with ESLint - config is in the data folder
+// copy of package.json with ESLint - config is in the data folder
 // {
 //   "name": "usegeoloction",
 //   "private": true,
