@@ -57,3 +57,20 @@ body {
 .test {
   color: tomato;
 }
+
+.btnB {
+  margin: 6px;
+  padding: 6px;
+  font-size: large;
+  border-radius: 12px;
+  transition: 0.3s;
+}
+
+/* .btnB:hover {
+  background-color: yellow;
+  color: lightgreen;
+  border-radius: 50%;
+  font-size: x;
+  padding: 24px;
+  margin: 12px;
+} */
