@@ -1,0 +1,112 @@
+html {
+  background-color: antiquewhite;
+}
+body {
+  margin: 12px auto;
+  text-align: center;
+}
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+.container {
+  border: 1px dotted chocolate;
+  border-radius: 6px;
+  height: 90vh;
+  padding: 6px;
+}
+
+/* .active {
+  color: yellowgreen;
+} */
+
+/* making global css class - global function, usually mostly used when
+working with some classes that are provided from external sources - 
+the active class is provided by React router, to work with him - 
+with this global thing... otherwise we can use them in the global css file - 
+index.css*/
+:global(.test) {
+  width: 60%;
+  margin: 6px auto;
+  padding: 12px !important;
+  font-size: x-large;
+  color: limegreen;
+  border: 2px solid tomato;
+  border-radius: 12px;
+  padding: 6px;
+  /* animation: logo-spin infinite 20s linear; */
+}
+
+.test {
+  width: 60%;
+  margin: 6px auto;
+  padding: 12px !important;
+  font-size: x-large;
+  color: limegreen;
+  border: 2px solid tomato;
+  border-radius: 12px;
+  padding: 6px;
+  /* animation: logo-spin infinite 20s linear; */
+}
+
+.btnB {
+  margin: 6px;
+  padding: 6px;
+  font-size: large;
+  border-radius: 12px;
+  transition: 0.3s;
+}
+
+/* .btnB:hover {
+  background-color: yellow;
+  color: lightgreen;
+  border-radius: 50%;
+  font-size: x;
+  padding: 24px;
+  margin: 12px;
+} */

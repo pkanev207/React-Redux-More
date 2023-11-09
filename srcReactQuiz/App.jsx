@@ -47,6 +47,7 @@ function reducer(state, action) {
         secondsRemaining: state.questions.length * SECS_PER_QUESTION,
       };
     case "newAnswer":
+      // eslint-disable-next-line no-case-declarations
       const question = state.questions.at(state.index);
       return {
         ...state,
@@ -144,8 +145,8 @@ export default function App() {
           />
         )}
       </Main>
-      {/* <DateCounter />/ */}
-      {/* <Location /> */}
+      <DateCounter />/
+      <Location />
     </div>
   );
 }
