@@ -12,7 +12,7 @@ export function convertToEmoji(countryCode) {
   return String.fromCodePoint(...codePoints);
 }
 
-function Form() {
+export default function Form() {
   const [cityName, setCityName] = useState("");
   const [country, setCountry] = useState("");
   const [date, setDate] = useState(new Date());
@@ -55,5 +55,3 @@ function Form() {
     </form>
   );
 }
-
-export default Form;
