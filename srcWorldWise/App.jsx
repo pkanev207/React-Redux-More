@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 // import Home from "./pages/Home.jsx";
@@ -11,6 +11,7 @@ import City from "./components/City.jsx";
 import CityList from "./components/CityList.jsx";
 import CountryList from "./components/CountryList.jsx";
 import PageNotFound from "./pages/PageNotFound.jsx";
+import Form from "./components/Form.jsx";
 // import "./App.css";
 // assets folder is to directly import into js files
 
@@ -34,7 +35,7 @@ export default function App() {
         const data = await res.json();
         setCities(data);
       } catch (err) {
-        alert(err.message);
+        console.error(err.message);
       } finally {
         setIsLoading(false);
       }
@@ -47,17 +48,21 @@ export default function App() {
       <Routes>
         {/* <Route path="/" element={<Homepage />} /> */}
         <Route index element={<Homepage />} />
-        <Route path="/product" element={<Product />} />
-        <Route path="/pricing" element={<Pricing />} />
-        <Route path="/login" element={<Login />} />
+
+        <Route path="product" element={<Product />} />
+        <Route path="pricing" element={<Pricing />} />
+        <Route path="login" element={<Login />} />
+
         {/* nested routes - when we want a part of the UI to be controlled by part of the url */}
-        <Route path="/app" element={<AppLayout />}>
-          {/* The Index route is the default route if none of the child routes is matched */}
-          {/* The element can be any jsx element and no slash at the beginning of the Route */}
-          {/* <Route index element={<p>List of cities</p>} /> */}
+        {/* The Index route is the default route if none of the child routes is matched */}
+        {/* The element can be any jsx element and no slash at the beginning of the Route */}
+        {/* <Route index element={<p>List of cities</p>} /> */}
+        {/* Navigate component is still used today in nested routes, basically - redirect - declarative way! */}
+        <Route path="app" element={<AppLayout />}>
           <Route
             index
-            element={<CityList cities={cities} isLoading={isLoading} />}
+            // element={<CityList cities={cities} isLoading={isLoading} />}
+            element={<Navigate replace to={"cities"} />}
           />
           <Route
             path="cities"
@@ -68,9 +73,10 @@ export default function App() {
             path="countries"
             element={<CountryList cities={cities} isLoading={isLoading} />}
           />
-          <Route path="form" element={<p>Form goes here!!!!!</p>} />
-          {/* We than use <Outlet/> to point where to render that piece */}
+          <Route path="form" element={<Form />} />
         </Route>
+        {/* We than use <Outlet/> to point where to render that piece */}
+
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>

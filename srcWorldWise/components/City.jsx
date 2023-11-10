@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import styles from "./City.module.css";
 
 const formatDate = (date) =>
@@ -11,6 +11,7 @@ const formatDate = (date) =>
 
 function City() {
   const { id } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   // TEMP DATA
   const currentCity = {
@@ -55,6 +56,22 @@ function City() {
       </div>
 
       <div>{/* <ButtonBack /> */}</div>
+      <div>
+        <h3>Position:</h3>
+        <p>{searchParams.get("lat")}</p>
+        <p>{searchParams.get("lng")}</p>
+        <button
+          className="btnSOB"
+          onClick={() => {
+            setSearchParams({
+              lat: Math.random(),
+              lng: Math.random(),
+            });
+          }}
+        >
+          Change position
+        </button>
+      </div>
     </div>
   );
 }

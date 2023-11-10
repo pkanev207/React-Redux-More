@@ -91,10 +91,10 @@ input:focus {
 }
 
 .btnSOB:hover {
-  font-size: x-large;
-  padding: 24px 48px;
+  /* font-size: x-large; */
+  padding: 12px 36px;
   color: white;
   background-color: var(--color-brand--2);
   box-shadow: 12px 6px 8px #888888;
-  position: relative;
+  position: -webkit-sticky;
 }

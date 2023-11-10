@@ -12,19 +12,25 @@ const formatDate = (date) =>
   }).format(new Date(date));
 
 export default function CityItem({ city }) {
-  const { cityName, yetanotheremoji, date, id } = city;
+  const { cityName, yetanotheremoji, date, id, position } = city;
 
   return (
     <li>
-      {/* in this forma it will only added to the current url 
+      {/* in this format it will only added to the current url 
       if we add "/" - it will go to the root URL + "/id"*/}
-      <Link to={`${id}`} className={styles.cityItem}>
+      <Link
+        to={`${id}?lat=${position.lat}&lng=${position.lng}`}
+        className={styles.cityItem}
+      >
         <span className={styles.emoji}>{yetanotheremoji}</span>
         <h3 className={styles.name}>{cityName}</h3>
         <time className={styles.date}>{formatDate(date)}</time>
         <button
           className={styles.deleteBtn}
-          onClick={() => console.log("Click!")}
+          onClick={(e) => {
+            e.preventDefault();
+            console.log("Click!");
+          }}
         >
           &times;
         </button>
