@@ -1,5 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 // Custom hook on top of another custom hook!
+// useSearchParams - a custom hook from React Router
 export function useUrlPosition() {
   const [searchParams] = useSearchParams();
   const lat =

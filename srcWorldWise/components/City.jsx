@@ -20,7 +20,7 @@ function City() {
 
   useEffect(() => {
     getCity(id);
-  }, [id]);
+  }, [id])
 
   // TEMP DATA
   // const currentCity = {
