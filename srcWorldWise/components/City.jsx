@@ -1,5 +1,9 @@
+import { useEffect } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import styles from "./City.module.css";
+import { useCities } from "../contexts/CitiesContext.jsx";
+import Spinner from "./Spinner.jsx";
+import BackButton from "./BackButton.jsx";
 
 const formatDate = (date) =>
   new Intl.DateTimeFormat("en", {
@@ -11,24 +15,31 @@ const formatDate = (date) =>
 
 function City() {
   const { id } = useParams();
+  const { getCity, currentCity, isLoading } = useCities();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // TEMP DATA
-  const currentCity = {
-    cityName: "Lisbon",
-    emoji: "🇵🇹",
-    date: "2027-10-31T15:59:59.138Z",
-    notes: "My favorite city so far!",
-  };
+  useEffect(() => {
+    getCity(id);
+  }, [id]);
 
-  const { cityName, emoji, date, notes } = currentCity;
+  // TEMP DATA
+  // const currentCity = {
+  //   cityName: "Lisbon",
+  //   emoji: "🇵🇹",
+  //   date: "2027-10-31T15:59:59.138Z",
+  //   notes: "My favorite city so far!",
+  // };
+
+  const { cityName, yetanotheremoji, date, notes } = currentCity;
+
+  if (isLoading) return <Spinner />;
 
   return (
     <div className={styles.city}>
       <div className={styles.row}>
         <h6>City {id}</h6>
         <h3>
-          <span>{emoji}</span> {cityName}
+          <span>{yetanotheremoji}</span> {cityName}
         </h3>
       </div>
 
@@ -54,15 +65,16 @@ function City() {
           Check out {cityName} on Wikipedia &rarr;
         </a>
       </div>
-
-      <div>{/* <ButtonBack /> */}</div>
       <div>
-        <h3>Position:</h3>
-        <p>{searchParams.get("lat")}</p>
-        <p>{searchParams.get("lng")}</p>
+        <BackButton />
+      </div>
+      <br />
+      <div>
         <button
           className="btnSOB"
-          onClick={() => {
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
             setSearchParams({
               lat: Math.random(),
               lng: Math.random(),
@@ -71,6 +83,9 @@ function City() {
         >
           Change position
         </button>
+        <h3>Position:</h3>
+        <p>{searchParams.get("lat")}</p>
+        <p>{searchParams.get("lng")}</p>
       </div>
     </div>
   );

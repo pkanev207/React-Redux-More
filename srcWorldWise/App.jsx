@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 
 // import Home from "./pages/Home.jsx";
 import Homepage from "./pages/Homepage.jsx";
@@ -15,71 +14,42 @@ import Form from "./components/Form.jsx";
 // import "./App.css";
 // assets folder is to directly import into js files
 
-const BASE_URL = "http://localhost:9000";
-// The URL is an excellent place to store state and an alternative to useEffect in some
-// situations - open/close panels, currently selected list item, list sorting order, applied list filters...
-// Easy way to store state in a global place, accessible to all components in the app!
-// Makes it possible to bookmark and share the page with the exact UI state it had at the time!
-// params - to pass data to the next page, query string - to store global state
+import { CitiesProvider } from "./contexts/CitiesContext.jsx";
+
 export default function App() {
-  // It's better to make those calculations here than in child components,
-  // because there they will happen every time the child component rerenders
-  const [cities, setCities] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        setIsLoading(true);
-        const res = await fetch(`${BASE_URL}/cities`);
-        const data = await res.json();
-        setCities(data);
-      } catch (err) {
-        console.error(err.message);
-      } finally {
-        setIsLoading(false);
-      }
-    })();
-  }, []);
-  (async () => {})();
-
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* <Route path="/" element={<Homepage />} /> */}
-        <Route index element={<Homepage />} />
+    <CitiesProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* <Route path="/" element={<Homepage />} /> */}
+          <Route index element={<Homepage />} />
 
-        <Route path="product" element={<Product />} />
-        <Route path="pricing" element={<Pricing />} />
-        <Route path="login" element={<Login />} />
+          <Route path="product" element={<Product />} />
+          <Route path="pricing" element={<Pricing />} />
+          <Route path="login" element={<Login />} />
 
-        {/* nested routes - when we want a part of the UI to be controlled by part of the url */}
-        {/* The Index route is the default route if none of the child routes is matched */}
-        {/* The element can be any jsx element and no slash at the beginning of the Route */}
-        {/* <Route index element={<p>List of cities</p>} /> */}
-        {/* Navigate component is still used today in nested routes, basically - redirect - declarative way! */}
-        <Route path="app" element={<AppLayout />}>
-          <Route
-            index
-            // element={<CityList cities={cities} isLoading={isLoading} />}
-            element={<Navigate replace to={"cities"} />}
-          />
-          <Route
-            path="cities"
-            element={<CityList cities={cities} isLoading={isLoading} />}
-          />
-          <Route path="cities/:id" element={<City />} />
-          <Route
-            path="countries"
-            element={<CountryList cities={cities} isLoading={isLoading} />}
-          />
-          <Route path="form" element={<Form />} />
-        </Route>
-        {/* We than use <Outlet/> to point where to render that piece */}
+          {/* nested routes - when we want a part of the UI to be controlled by part of the url */}
+          {/* The Index route is the default route if none of the child routes is matched */}
+          {/* The element can be any jsx element and no slash at the beginning of the Route */}
+          {/* <Route index element={<p>List of cities</p>} /> */}
+          {/* Navigate component is still used today in nested routes, basically - redirect - declarative way! */}
+          <Route path="app" element={<AppLayout />}>
+            <Route
+              index
+              // element={<CityList cities={cities} isLoading={isLoading} />}
+              element={<Navigate replace to={"cities"} />}
+            />
+            <Route path="cities" element={<CityList />} />
+            <Route path="cities/:id" element={<City />} />
+            <Route path="countries" element={<CountryList />} />
+            <Route path="form" element={<Form />} />
+          </Route>
+          {/* We than use <Outlet/> to point where to render that piece */}
 
-        <Route path="*" element={<PageNotFound />} />
-      </Routes>
-    </BrowserRouter>
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </CitiesProvider>
   );
 }
 
