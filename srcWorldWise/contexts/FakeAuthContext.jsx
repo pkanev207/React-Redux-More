@@ -57,6 +57,8 @@ function useAuth() {
   if (context === undefined) {
     throw new Error("AuthContext was used outside AuthProvider!");
   }
+
+  return context;
 }
 
 // eslint-disable-next-line react-refresh/only-export-components

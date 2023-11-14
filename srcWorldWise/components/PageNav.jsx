@@ -3,8 +3,11 @@ import Logo from "./Logo.jsx";
 // all classes are in one huge object
 // when we are writing css modules we usually write in kebabCase - the js way!
 import styles from "./PageNav.module.css";
+import { useAuth } from "../contexts/FakeAuthContext.jsx";
 
 export default function PageNav() {
+  const { isAuthenticated, logout } = useAuth();
+
   return (
     <nav className={styles.nav}>
       <Logo />
@@ -21,9 +24,18 @@ export default function PageNav() {
           <NavLink to="/pricing">Pricing</NavLink>
         </li>
         <li>
-          <NavLink to="/login" className={styles.ctaLink}>
+          {isAuthenticated ? (
+            <NavLink to="/" className={styles.ctaLink} onClick={logout}>
+              Logout
+            </NavLink>
+          ) : (
+            <NavLink to="/login" className={styles.ctaLink}>
+              Login
+            </NavLink>
+          )}
+          {/* <NavLink to="/login" className={styles.ctaLink}>
             Login
-          </NavLink>
+          </NavLink> */}
         </li>
       </ul>
     </nav>

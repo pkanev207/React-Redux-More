@@ -1,19 +1,35 @@
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import PageNav from "../components/PageNav.jsx";
-
+import Button from "../components/Button.jsx";
 import styles from "./Login.module.css";
+
+import { useAuth } from "../contexts/FakeAuthContext.jsx";
 
 export default function Login() {
   // PRE-FILL FOR DEV PURPOSES
   const [email, setEmail] = useState("jack@example.com");
   const [password, setPassword] = useState("qwerty");
+  const navigate = useNavigate();
+  const { isAuthenticated, login } = useAuth();
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    if (email && password) login(email, password);
+  }
+
+  useEffect(() => {
+    // once the navigation happens it will replace the Login page
+    // in the history stack with "/app", overwrites it
+    if (isAuthenticated) return navigate("/app", { replace: true });
+  }, [isAuthenticated, navigate]);
 
   return (
     <main className={styles.login}>
       <PageNav />
 
-      <form className={styles.form}>
+      <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.row}>
           <label htmlFor="email">Email address</label>
           <input
@@ -34,8 +50,21 @@ export default function Login() {
           />
         </div>
 
-        <div>
-          <button className="btnSOB">Login</button>
+        <div style={{ display: "flex", gap: "30px" }}>
+          <Button type="primary">Login</Button>
+          <button
+            className="btnSOB"
+            onClick={(e) => {
+              e.preventDefault();
+              const [email, password] = Array.from(
+                e.target.parentNode.parentNode.querySelectorAll("input")
+              ).map((x) => x.value);
+              // console.log(email, password);
+              login(email, password);
+            }}
+          >
+            Login
+          </button>
         </div>
       </form>
     </main>

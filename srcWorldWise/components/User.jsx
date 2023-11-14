@@ -1,21 +1,27 @@
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/FakeAuthContext.jsx";
+
 import styles from "./User.module.css";
 
-const FAKE_USER = {
-  name: "Jack",
-  email: "jack@example.com",
-  password: "qwerty",
-  avatar: "https://i.pravatar.cc/100?u=zz",
-};
-
 function User() {
-  const user = FAKE_USER;
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
-  function handleClick() {}
+  function handleClick() {
+    logout();
+    navigate("/");
+  }
 
   return (
     <div className={styles.user}>
-      <img src={user.avatar} alt={user.name} />
-      <span>Welcome, {user.name}</span>
+      <img
+        src={
+          user?.avatar ||
+          "https://images.unsplash.com/photo-1699459867210-f0bbd01ec041?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        }
+        alt={user?.name}
+      />
+      <span>Welcome, {user?.name || "default user"}</span>
       <button onClick={handleClick}>Logout</button>
     </div>
   );
@@ -28,7 +34,16 @@ CHALLENGE
 
 1) Add `AuthProvider` to `App.jsx`
 2) In the `Login.jsx` page, call `login()` from context
-3) Inside an effect, check whether `isAuthenticated === true`. If so, programatically navigate to `/app`
-4) In `User.js`, read and display logged in user from context (`user` object). Then include this component in `AppLayout.js`
+3) Inside an effect, check whether `isAuthenticated === true`. 
+// If so, programatically navigate to `/app`
+4) In `User.js`, read and display logged in user from context (`user` object). 
+// Then include this component in `AppLayout.js`
 5) Handle logout button by calling `logout()` and navigating back to `/`
 */
+
+// const FAKE_USER = {
+//   name: "Jack",
+//   email: "jack@example.com",
+//   password: "qwerty",
+//   avatar: "https://i.pravatar.cc/100?u=zz",
+// };
