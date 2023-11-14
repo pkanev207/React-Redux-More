@@ -32,7 +32,7 @@
       "emoji": "🇪🇸",
       "yetanotheremoji": "🏳‍🌈",
       "date": "2027-07-15T08:22:53.976Z",
-      "notes": "",
+      "notes": "Yet another favorite city! 😊",
       "position": {
         "lat": 40.46635901755316,
         "lng": -3.7133789062500004
@@ -64,6 +64,84 @@
         "lng": 13.376933665713324
       },
       "id": 98443197
+    },
+    {
+      "cityName": "Varvarin",
+      "country": "Serbia",
+      "emoji": "🇷🇸",
+      "yetanotheremoji": "🏳",
+      "date": "2023-11-14T08:03:35.900Z",
+      "notes": "alabala",
+      "position": {
+        "lat": "43.723461516760445",
+        "lng": "21.223799248504733"
+      },
+      "id": 98443198
+    },
+    {
+      "cityName": "Buzau",
+      "country": "Romania",
+      "emoji": "🇷🇴",
+      "yetanotheremoji": "🏳",
+      "date": "2023-11-14T08:11:15.668Z",
+      "notes": "",
+      "position": {
+        "lat": "45.13167359697573",
+        "lng": "26.86621438775618"
+      },
+      "id": 98443199
+    },
+    {
+      "cityName": "Blagoevgrad",
+      "country": "Bulgaria",
+      "emoji": "🇧🇬",
+      "yetanotheremoji": "🏳",
+      "date": "2023-11-14T08:24:53.574Z",
+      "notes": "A nasty town and population...",
+      "position": {
+        "lat": "41.99930607981415",
+        "lng": "23.091706169275014"
+      },
+      "id": 98443202
+    },
+    {
+      "cityName": "Krusevac",
+      "country": "Serbia",
+      "emoji": "🇷🇸",
+      "yetanotheremoji": "🏳",
+      "date": "2023-11-14T08:33:54.146Z",
+      "notes": "ffse",
+      "position": {
+        "lat": "43.5704390454593",
+        "lng": "21.346234869396607"
+      },
+      "id": 98443203
+    },
+    {
+      "cityName": "Saint-Vitte",
+      "country": "France",
+      "emoji": "🇫🇷",
+      "yetanotheremoji": "🏳",
+      "date": "2023-11-14T09:31:29.883Z",
+      "notes": "",
+      "position": {
+        "lat": "46.539959906359485",
+        "lng": "2.5607901193597242"
+      },
+      "id": 98443204
+    },
+    {
+      "cityName": "Arcos de Jalon",
+      "country": "Spain",
+      "emoji": "🇪🇸",
+      "yetanotheremoji": "🏳",
+      "date": "2023-11-14T09:33:34.301Z",
+      "notes": "",
+      "position": {
+        "lat": "41.174509340984876",
+        "lng": "-2.384417525274805"
+      },
+      "id": 98443205
     }
   ]
 }

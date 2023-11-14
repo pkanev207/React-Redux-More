@@ -2,7 +2,7 @@
 // "https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=0&longitude=0"
 
 import { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import DatePicker from "react-datepicker";
 import Button from "./Button.jsx";
@@ -13,6 +13,7 @@ import Spinner from "./Spinner.jsx";
 
 import styles from "./Form.module.css";
 import "react-datepicker/dist/react-datepicker.css";
+import { useCities } from "../contexts/CitiesContext.jsx";
 
 export function convertToEmoji(countryCode) {
   const codePoints = countryCode
@@ -25,8 +26,9 @@ export function convertToEmoji(countryCode) {
 const BASE_URL = "https://api.bigdatacloud.net/data/reverse-geocode-client";
 
 export default function Form() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [lat, lng] = useUrlPosition();
+  const { createCity, isLoading } = useCities();
 
   const [isLoadingGeocoding, setIsLoadingGeocoding] = useState(false);
   const [cityName, setCityName] = useState("");
@@ -68,9 +70,25 @@ export default function Form() {
     [lat, lng]
   );
 
-  function handleSubmit(e) {
-    // we set this in the BackButton
+  async function handleSubmit(e) {
+    // we also set this in the BackButton, but should do it again
     e.preventDefault();
+
+    if (!cityName || !date) return;
+
+    const newCity = {
+      cityName,
+      country,
+      emoji,
+      yetanotheremoji: "🏳",
+      date,
+      notes,
+      position: { lat, lng },
+    };
+
+    // to see the css effects - Beautiful!
+    await createCity(newCity);
+    navigate("/app/cities");
   }
 
   if (isLoadingGeocoding) return <Spinner />;
@@ -80,7 +98,10 @@ export default function Form() {
   if (geocodingError) return <Message message={geocodingError} />;
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
+    <form
+      className={`${styles.form} ${isLoading ? styles.loading : ""}`}
+      onSubmit={handleSubmit}
+    >
       <div className={styles.row}>
         <label htmlFor="cityName">City name</label>
         <input

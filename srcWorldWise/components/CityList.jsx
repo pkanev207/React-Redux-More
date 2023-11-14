@@ -11,7 +11,7 @@ export default function CityList() {
 
   if (isLoading) return <Spinner />;
 
-  if (!cities.length)
+  if (!cities?.length)
     return <Message message="Add your first city by clicking on the map" />;
 
   return (
