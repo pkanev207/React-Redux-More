@@ -116,32 +116,6 @@
         "lng": "21.346234869396607"
       },
       "id": 98443203
-    },
-    {
-      "cityName": "Saint-Vitte",
-      "country": "France",
-      "emoji": "🇫🇷",
-      "yetanotheremoji": "🏳",
-      "date": "2023-11-14T09:31:29.883Z",
-      "notes": "",
-      "position": {
-        "lat": "46.539959906359485",
-        "lng": "2.5607901193597242"
-      },
-      "id": 98443204
-    },
-    {
-      "cityName": "Arcos de Jalon",
-      "country": "Spain",
-      "emoji": "🇪🇸",
-      "yetanotheremoji": "🏳",
-      "date": "2023-11-14T09:33:34.301Z",
-      "notes": "",
-      "position": {
-        "lat": "41.174509340984876",
-        "lng": "-2.384417525274805"
-      },
-      "id": 98443205
     }
   ]
 }
