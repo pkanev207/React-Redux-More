@@ -5,6 +5,7 @@ import {
   useEffect,
   useContext,
   useReducer,
+  useCallback,
 } from "react";
 
 const BASE_URL = "http://localhost:9000";
@@ -86,27 +87,32 @@ function CitiesProvider({ children }) {
     })();
   }, []);
 
-  function getCity(id) {
-    (async () => {
-      // the id is a string because is coming from the url somewhere in the components
-      if (id == currentCity?.id) return;
+  // memoizing values in the dependency array of another hook
+  // to prevent infinite loop
+  const getCity = useCallback(
+    function getCity(id) {
+      (async () => {
+        // the id is a string because is coming from the url somewhere in the components
+        if (id == currentCity?.id) return;
 
-      dispatch({ type: "loading" });
+        dispatch({ type: "loading" });
 
-      try {
-        // setIsLoading(true);
-        const res = await fetch(`${BASE_URL}/cities/${id}`);
-        const data = await res.json();
-        // setCurrenCity(data);
-        dispatch({ type: "city/loaded", payload: data });
-      } catch (err) {
-        // console.error(err.message);
-        dispatch({ type: "rejected", payload: err.message });
-      } finally {
-        // setIsLoading(false);
-      }
-    })();
-  }
+        try {
+          // setIsLoading(true);
+          const res = await fetch(`${BASE_URL}/cities/${id}`);
+          const data = await res.json();
+          // setCurrenCity(data);
+          dispatch({ type: "city/loaded", payload: data });
+        } catch (err) {
+          // console.error(err.message);
+          dispatch({ type: "rejected", payload: err.message });
+        } finally {
+          // setIsLoading(false);
+        }
+      })();
+    },
+    [currentCity.id]
+  );
 
   // function that uploads cities to the fake api - right here
   async function createCity(newCity) {
@@ -155,6 +161,8 @@ function CitiesProvider({ children }) {
   }
 
   return (
+    // no point in memoizing this values, cause we don't have any component
+    // above this one that might trigger a rerender to the Provider
     <CitiesContext.Provider
       // one option is to pass the dispatch function to the components and deal there
       // with updating state, it would be better if we were not dealing with async data

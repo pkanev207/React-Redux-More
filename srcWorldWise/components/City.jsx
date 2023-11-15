@@ -20,7 +20,10 @@ function City() {
 
   useEffect(() => {
     getCity(id);
-  }, [id])
+    // if we add getCity it will create infinite loop
+    // it changes the state and so gets recreated each time
+    // we should make this function stable with the useCallback
+  }, [id, getCity]);
 
   // TEMP DATA
   // const currentCity = {
