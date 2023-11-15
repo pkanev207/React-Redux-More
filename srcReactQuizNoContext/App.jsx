@@ -1,5 +1,17 @@
 import { useEffect, useReducer } from "react";
-// As one component rerenders - all his child components will rerender as well
+// Optimization: Prevent wasted renders, improve app speed/responsiveness, reduce bundle size
+// As one component rerenders - all his child components will rerender as well!!!
+// A change of state in one component will rerender the child components
+// But if the props change the component did not rerenders!! Course, the props only change when the parent rerenders...
+// Remember: a render does not mean that the DOM actually gets updated,
+// just the component functions get called - this can be expensive operation
+// Wasted render - didn't produce any changes in the DOM
+
+// The Slow Component does not need the state, but it has been
+// rerender nonetheless every time the state changes. So we split them
+// by passing the SlowComponent as children
+// components passed as children would not rerender unless they do actually consume the context
+
 import Header from "./components/Header.jsx";
 // import DateCounter from "./components/DateCounter.jsx";
 // import Location from "./components/Location.jsx";

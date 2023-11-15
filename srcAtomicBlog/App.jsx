@@ -3,6 +3,13 @@ import { useEffect, useState } from "react";
 import { faker } from "@faker-js/faker";
 import PostProvider from "./PostContext.jsx";
 import { usePosts } from "./PostContext.jsx";
+// import Test from "./Test.jsx";
+
+// Optimization: Prevent wasted renders, improve app speed/responsiveness, reduce bundle size
+// Remember: a render does not mean that the DOM actually gets updated,
+// just the component functions get called - this can be expensive operation
+// Wasted render - didn't produce any changes in the DOM
+// components passed as children would not rerender unless they do actually consume the context
 
 function createRandomPost() {
   return {
@@ -134,14 +141,18 @@ function List() {
   const { posts } = usePosts();
 
   return (
-    <ul>
-      {posts.map((post, i) => (
-        <li key={i}>
-          <h3>{post.title}</h3>
-          <p>{post.body}</p>
-        </li>
-      ))}
-    </ul>
+    <>
+      <ul>
+        {posts.map((post, i) => (
+          <li key={i}>
+            <h3>{post.title}</h3>
+            <p>{post.body}</p>
+          </li>
+        ))}
+      </ul>
+
+      {/* <Test /> */}
+    </>
   );
 }
 
