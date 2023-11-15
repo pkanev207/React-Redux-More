@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { memo, useMemo, useEffect, useState } from "react";
+import { memo, useMemo, useEffect, useState, useCallback } from "react";
 import { faker } from "@faker-js/faker";
 
 function createRandomPost() {
@@ -13,6 +13,7 @@ function App() {
   const [posts, setPosts] = useState(() =>
     Array.from({ length: 30 }, () => createRandomPost())
   );
+
   const [searchQuery, setSearchQuery] = useState("");
   const [isFakeDark, setIsFakeDark] = useState(false);
 
@@ -26,9 +27,13 @@ function App() {
         )
       : posts;
 
-  function handleAddPost(post) {
+  // returns the function, which we can store in a regular variable
+  // the difference is that useCallback would not immediately call the function
+  // instead would memoize it, while useMemo would memoize the result of the callback
+  const handleAddPost = useCallback(function handleAddPost(post) {
     setPosts((posts) => [post, ...posts]);
-  }
+    // React is not complaining, cause this is a setter function of useState
+  }, []);
 
   function handleClearPosts() {
     setPosts([]);
@@ -41,6 +46,9 @@ function App() {
     },
     [isFakeDark]
   );
+
+  // useMemo stores the result, useCallback - the function. React stores and runs this functions
+  // so using them only makes sense if we sees an improvement in performance
   const archiveOptions = useMemo(() => {
     // whatever we return will be saved in the cache
     return {
@@ -71,7 +79,15 @@ function App() {
       <Main posts={searchedPosts} onAddPost={handleAddPost} />
       {/* <Archive onAddPost={handleAddPost} /> */}
       {/* <Archive show={false} /> */}
-      <Archive archiveOptions={archiveOptions} />
+      <Archive
+        archiveOptions={archiveOptions}
+        onAddPost={handleAddPost}
+        // React guarantees that setter functions of useState hook always
+        // have a stable identities - they will not change on renders
+        // automatically memoized - and memo still works!!! 😎
+        // And we can omit them from the dependency arrays of all this hooks!!!
+        setIsFakeDark={setIsFakeDark}
+      />
       <Footer />
     </section>
   );

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { faker } from "@faker-js/faker";
 import PostProvider from "./PostContext.jsx";
 import { usePosts } from "./PostContext.jsx";
@@ -74,6 +74,7 @@ function SearchPosts() {
 
   return (
     <input
+      // not to rerender because of changed context
       value={searchQuery}
       onChange={(e) => setSearchQuery(e.target.value)}
       placeholder="Search posts..."
@@ -88,14 +89,15 @@ function Results() {
   return <p>🚀 {posts.length} atomic posts found</p>;
 }
 
-function Main() {
+// Posts nad List did not rerender
+const Main = memo(function Main() {
   return (
     <main>
       <FormAddPost />
       <Posts />
     </main>
   );
-}
+});
 
 function Posts() {
   return (

@@ -1,15 +1,18 @@
 /* eslint-disable react/prop-types */
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
 import { faker } from "@faker-js/faker";
 // ContextAPI is best suited to manage UI state!!!
 // we can use useRef for local state and it won't rerender the component..
-
+// we should create one context per state to avoid too many rerenders
 function createRandomPost() {
   return {
     title: `${faker.hacker.adjective()} ${faker.hacker.noun()}`,
     body: faker.hacker.phrase(),
   };
 }
+
+// We should only optimize context only with three conditions: The state in the
+// context changes all the time, have many consumers and the app is laggy
 
 // 1) CREATE A NEW CONTEXT
 // whenever the context value changes - all the consumers rerenders
@@ -48,6 +51,9 @@ export default function PostProvider({ children }) {
         )
       : posts;
 
+  // if we provide those 2 functions in the dependency array, we should
+  // wrap them with useCallback, otherwise each time they will be recreated
+
   function handleAddPost(post) {
     setPosts((posts) => [post, ...posts]);
   }
@@ -55,16 +61,25 @@ export default function PostProvider({ children }) {
   function handleClearPosts() {
     setPosts([]);
   }
+
+  const value = useMemo(() => {
+    return {
+      posts: searchedPosts,
+      onAddPost: handleAddPost,
+      onClearPosts: handleClearPosts,
+      searchQuery,
+      setSearchQuery,
+    };
+  }, [searchedPosts, searchQuery]);
+
   return (
-    <PostContext.Provider
-      value={{
-        posts: searchedPosts,
-        onAddPost: handleAddPost,
-        onClearPosts: handleClearPosts,
-        searchQuery,
-        setSearchQuery,
-      }}
-    >
+    // children of the App.jsx, when gets recreated - also the value obj
+    // gets recreated - this means that the context value has changed
+    // therefore all the components that consume the context will rerender
+    // we should memoize!!!
+    <PostContext.Provider value={value}>
+      {/* Either this technique with the children or memoize
+      the direct descendants of the context */}
       {children}
     </PostContext.Provider>
   );
