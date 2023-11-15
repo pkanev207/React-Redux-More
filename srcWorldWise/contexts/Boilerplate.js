@@ -65,6 +65,7 @@ function useAuth() {
 export { AuthProvider, useAuth };
 
 // // ProtectedRoute.jsx
+/* eslint-disable react/prop-types */
 // import { useEffect } from "react";
 // import { useNavigate } from "react-router-dom";
 // import { useAuth } from "../contexts/FakeAuthContext.jsx";
@@ -80,6 +81,8 @@ export { AuthProvider, useAuth };
 //     },
 //     [isAuthenticated, navigate]
 //   );
-
-//   return children;
+//   // useEffect is executed AFTER the component has been rendered
+//   // so it will initially render the children, which includes the User.jsx
+//   // return conditionally or fake user data in the component?
+//   return isAuthenticated ? children : null;
 // }

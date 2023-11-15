@@ -1,9 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useQuiz } from "../contexts/QuizContext.jsx";
-
-export default function Options({ question }) {
-  const { dispatch, answer } = useQuiz();
-
+export default function Options({ question, dispatch, answer }) {
   const hasAnswered = answer !== null;
 
   return (
@@ -19,7 +15,8 @@ export default function Options({ question }) {
           }`}
           key={crypto.randomUUID()}
           disabled={answer != null}
-          onClick={() => {
+          onClick={(e) => {
+            // e.preventDefault();
             dispatch({ type: "newAnswer", payload: index });
           }}
         >

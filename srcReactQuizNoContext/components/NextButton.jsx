@@ -1,12 +1,9 @@
-import { useQuiz } from "../contexts/QuizContext.jsx";
-
-export default function NextButton() {
-  const { dispatch, answer, index, numQuestions } = useQuiz();
-
+export default function NextButton({ dispatch, answer, index, numQuestions }) {
   if (answer === null) return;
 
   if (index < numQuestions - 1)
     return (
+      // <div style={{ display: `${answer ? "block" : "none"}` }}>NextButton</div>
       <button
         className="btn btn-ui"
         onClick={() => dispatch({ type: "nextQuestion" })}
