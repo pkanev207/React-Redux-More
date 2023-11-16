@@ -40,7 +40,8 @@ h1 {
   margin-bottom: 2rem;
   background-clip: text;
   background-image: linear-gradient(to right bottom, #80dfe1, #4e7afa);
-  color: transparent;
+  /* color: transparent; */
+  color: #e7e7e7;
   transform: skew(-20deg);
 }
 
@@ -107,7 +108,8 @@ p {
   text-align: center;
   background-clip: text;
   background-image: linear-gradient(to right bottom, #80dfe1, #4e7afa);
-  color: transparent;
+  /* color: transparent; */
+  color: #e7e7e7;
 }
 
 button {
