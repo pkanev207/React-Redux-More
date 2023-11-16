@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/FakeAuthContext.jsx";
 
 export default function ProtectedRoute({ children }) {
-  // we should not call effect from top level code, they belong to useEffect
+  // we should not call effects from top level code, they belong to useEffect
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
 

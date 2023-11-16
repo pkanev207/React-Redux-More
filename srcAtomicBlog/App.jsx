@@ -18,6 +18,10 @@ function createRandomPost() {
   };
 }
 
+// If it is that some components are rerendering just because the parent
+// is rerendering, then the solution is to memoize those components
+// The memo function only works if the props that have been pass are the same!
+
 function App() {
   // Whenever `isFakeDark` changes, we toggle the `fake-dark-mode` class on the HTML
   // element (see in "Elements" dev tool).
@@ -89,7 +93,7 @@ function Results() {
   return <p>🚀 {posts.length} atomic posts found</p>;
 }
 
-// Posts nad List did not rerender
+// Posts and List did not rerender
 const Main = memo(function Main() {
   return (
     <main>
