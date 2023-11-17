@@ -54,6 +54,18 @@ function Calculator({ workouts, allowSound }) {
     playSound();
   }, [duration, allowSound]);
 
+  // useEffect relies heavily on closures
+  // any function first created and then not have been recreated
+  // have access to the initial snapshot of state and props
+  useEffect(
+    function () {
+      console.log(duration, sets);
+      document.title = `Your ${number}-exercise workout`;
+    },
+    // empty array - a stale closure
+    [number, duration, sets]
+  );
+
   const mins = Math.floor(duration);
   const seconds = (duration - mins) * 60;
 
