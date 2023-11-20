@@ -17,6 +17,7 @@ const accountSlice = createSlice({
     deposit(state, action) {
       // with createSlice we can write mutating logic
       state.balance += action.payload;
+      state.isLoading = false;
     },
     withdraw(state, action) {
       if (state.balance < action.payload)
@@ -47,10 +48,33 @@ const accountSlice = createSlice({
       state.loanPurpose = "";
       state.loan = 0;
     },
+    convertingCurrency(state) {
+      state.isLoading = true;
+    },
   },
 });
 
-export const { deposit, withdraw, requestLoan, payLoan } = accountSlice.actions;
+export const { withdraw, requestLoan, payLoan } = accountSlice.actions;
+
+// we should use createAsyncThunk here
+// thunks are auto provided in rtk and we don't have to install anything
+// here we don't use them, but our own action creator
+export function deposit(amount, currency) {
+  if (currency === "USD") return { type: "account/deposit", payload: amount };
+
+  return async function (dispatch) {
+    dispatch({ type: "account/convertingCurrency" });
+
+    const res = await fetch(
+      `https://api.frankfurter.app/latest?amount=${amount}&from=${currency}&to=USD`
+    );
+    const data = await res.json();
+    const converted = data.rates.USD;
+
+    dispatch({ type: "account/deposit", payload: converted });
+  };
+}
+
 export default accountSlice.reducer;
 
 // // OLD REDUX WAY
