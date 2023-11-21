@@ -28,3 +28,14 @@ Currently, two official plugins are available:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+#### Structure
+
+A feature based structure - each
+folder will contain all the file
+necessary to make this feature work  
+A ui folder - for the more reusable
+components  
+A services folder - for a reusable
+code for interacting with an API  
+Utils - helper functions  

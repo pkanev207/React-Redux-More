@@ -4,9 +4,9 @@ import MenuItem from "./MenuItem";
 
 function Menu() {
   const menu = useLoaderData();
-  console.log(menu);
+
   return (
-    <ul>
+    <ul className="divide-y divide-stone-200 px-2">
       {menu.map((pizza) => (
         <MenuItem pizza={pizza} key={pizza.id} />
       ))}
@@ -19,10 +19,7 @@ function Menu() {
 // without data loading waterfalls from render as you fetch anymore!!!
 export async function loader() {
   const menu = await getMenu();
-
   return menu;
 }
-
-loader();
 
 export default Menu;
