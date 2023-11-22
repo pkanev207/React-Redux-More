@@ -64,4 +64,4 @@ export default Cart;
 //   },
 // ];
 
-// finish cart state, action creators and selectors
+// using the cart for new orders, thunks & createAsyncThunk
