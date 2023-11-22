@@ -13,7 +13,6 @@ function Menu() {
     </ul>
   );
 }
-
 // render as you fetch strategy -React router will start fetching
 // at same time as rendering the correct route - at the same time!!!
 // without data loading waterfalls from render as you fetch anymore!!!

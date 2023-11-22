@@ -1,13 +1,14 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+// user state is going to be global ui state - Redux
 import Home from "./ui/Home";
+import Error from "./ui/Error";
 import Menu, { loader as menuLoader } from "./features/menu/Menu";
 import Cart from "./features/cart/Cart";
-import Order, { loader as orderLoader } from "./features/order/Order";
 import CreateOrder, {
   action as createOrderAction,
 } from "./features/order/CreateOrder";
+import Order, { loader as orderLoader } from "./features/order/Order";
 import AppLayout from "./ui/AppLayout";
-import Error from "./ui/Error";
 
 // declaring the router in a more declarative way 😉
 // necessary in react router 4 and above, to enable data fetching
