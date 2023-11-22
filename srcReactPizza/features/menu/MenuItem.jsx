@@ -1,18 +1,16 @@
 /* eslint-disable react/prop-types */
 import { useDispatch, useSelector } from "react-redux";
-
 import Button from "../../ui/Button";
 import DeleteItem from "../cart/DeleteItem";
 import UpdateItemQuantity from "../cart/UpdateItemQuantity";
-
 import { formatCurrency } from "../../utils/helpers";
 import { addItem, getCurrentQuantityById } from "../cart/cartSlice";
 
 function MenuItem({ pizza }) {
   const dispatch = useDispatch();
-
+  // changing the state do not reload the entire page, only the component, because of the optimizations of Redux
   const { id, name, unitPrice, ingredients, soldOut, imageUrl } = pizza;
-
+  // the selector function is a function that returns another function
   const currentQuantity = useSelector(getCurrentQuantityById(id));
   const isInCart = currentQuantity > 0;
 

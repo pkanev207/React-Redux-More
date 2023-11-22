@@ -63,3 +63,5 @@ export default Cart;
 //     totalPrice: 15,
 //   },
 // ];
+
+// finish cart state, action creators and selectors
