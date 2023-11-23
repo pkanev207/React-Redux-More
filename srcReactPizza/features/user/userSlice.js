@@ -65,8 +65,9 @@ const userSlice = createSlice({
       })
       .addCase(fetchAddress.rejected, (state, action) => {
         state.status = "error";
-        state.error = "There was a problem getting your address. Try again!";
-        // error string is auto placed on action.error ???
+        state.error =
+          "There was a problem getting your address. Handwrite it down!!!";
+        // if we want the error string is auto placed on action.error:
         // state.error = action.error.message;
       });
   },

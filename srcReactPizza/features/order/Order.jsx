@@ -1,33 +1,36 @@
 // Test IDs: IIDSAT , CQE92U
+import { useEffect } from "react";
 import { useFetcher, useLoaderData } from "react-router-dom";
-
 import OrderItem from "./OrderItem";
-
+import UpdateOrder from "./UpdateOrder";
 import { getOrder } from "../../services/apiRestaurant";
 import {
   calcMinutesLeft,
   formatCurrency,
   formatDate,
 } from "../../utils/helpers";
-import { useEffect } from "react";
-import UpdateOrder from "./UpdateOrder";
 
-// Everyone can search for all orders, so for privacy reasons
-// we're gonna gonna exclude names or address, these are only
-// for the restaurant staff
+// Everyone can search for all orders, so for privacy reasons we're gonna gonna exclude names or address,
+// these are only for the restaurant staff
 
 function Order() {
   const order = useLoaderData();
   const fetcher = useFetcher();
+  // sometimes we want to fetch data that is not associated with the current page
+  // and without causing navigation This hook lets you plug your UI into your actions
+  // and loaders without navigating - useFetcher. Fetcher has the three states - default "idle"
+  // It also provides a Form component!
 
   useEffect(
     function () {
-      if (!fetcher.data && fetcher.state === "idle") fetcher.load("/menu");
+      if (!fetcher.data && fetcher.state === "idle") {
+        fetcher.load("/menu");
+      }
     },
     [fetcher],
   );
+  // console.log(fetcher.data);
 
-  // Everyone can search for all orders, so for privacy reasons we're gonna gonna exclude names or address, these are only for the restaurant staff
   const {
     id,
     status,

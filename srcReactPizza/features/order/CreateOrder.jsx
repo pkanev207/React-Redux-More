@@ -47,14 +47,14 @@ function CreateOrder() {
       <h2 className="mb-8 text-xl font-semibold">
         Ready to order? Let&apos;s go!
       </h2>
-      <button
+      {/* <button
         onClick={(e) => {
           e.preventDefault();
           dispatch(fetchAddress());
         }}
       >
         Dispatch position
-      </button>
+      </button> */}
 
       {/* here we could do also PATCH and DELETE but not GET */}
       {/* no need for loading state and state variables */}
@@ -135,6 +135,7 @@ function CreateOrder() {
         <div>
           {/* nice trick to pass some data from the form */}
           <input type="hidden" name="cart" value={JSON.stringify(cart)} />
+          {/* and another trick */}
           <input
             type="hidden"
             name="position"
@@ -182,6 +183,7 @@ export async function action({ request }) {
   // we can not call hooks inside this function and can not use useNavigate. It's recommended to use
   // redirect in loaders and actions rather than useNavigate in your components when the redirect is in response to data.
   // Another hack to use is to import the store and to directly dispatch on him
+
   // do NOT overuse, it deactivates a couple of Redux optimizations on this page
   store.dispatch(clearCart());
 

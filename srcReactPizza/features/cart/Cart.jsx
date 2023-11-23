@@ -63,5 +63,3 @@ export default Cart;
 //     totalPrice: 15,
 //   },
 // ];
-
-// using the cart for new orders, thunks & createAsyncThunk

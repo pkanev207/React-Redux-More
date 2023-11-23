@@ -8,6 +8,8 @@ import CreateOrder, {
   action as createOrderAction,
 } from "./features/order/CreateOrder";
 import Order, { loader as orderLoader } from "./features/order/Order";
+import { action as updateOrderAction } from "./features/order/UpdateOrder";
+
 import AppLayout from "./ui/AppLayout";
 
 // declaring the router in a more declarative way 😉
@@ -42,6 +44,9 @@ const router = createBrowserRouter([
         element: <Order />,
         loader: orderLoader,
         errorElement: <Error />,
+        // this is working fine even though the form we want to connect
+        // is not on this page - we import it from child component:
+        action: updateOrderAction,
       },
     ],
   },

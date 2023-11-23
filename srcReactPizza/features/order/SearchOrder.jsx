@@ -7,7 +7,7 @@ export default function SearchOrder() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log("Searching...");
+    // console.log("Searching...");
     if (!query) return;
     navigate(`/order/${query}`);
     setQuery("");
