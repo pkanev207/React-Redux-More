@@ -14,6 +14,7 @@ export async function getCabins() {
 export async function createEditCabin(newCabin, id) {
   const hasImagePath = newCabin.image?.startsWith?.(supabaseUrl);
 
+  // if contains any "/" - supabase will create folders base on that
   const imageName = `${Math.random()}-${newCabin.image.name}`.replaceAll(
     "/",
     "",
@@ -24,6 +25,12 @@ export async function createEditCabin(newCabin, id) {
 
   // 1. Create/edit cabin
   let query = supabase.from("cabins");
+
+  // // original code from Supabase:
+  // const { data, error } = await supabase
+  //   .from("cabins")
+  //   .insert([{ some_column: "someValue", other_column: "otherValue" }])
+  //   .select();
 
   // A) CREATE
   if (!id) query = query.insert([{ ...newCabin, image: imagePath }]);
@@ -45,7 +52,7 @@ export async function createEditCabin(newCabin, id) {
     .from("cabin-images")
     .upload(imageName, newCabin.image);
 
-  // 3. Delete the cabin IF there was an error uplaoding image
+  // 3. Delete the cabin IF there was an error uploading image
   if (storageError) {
     await supabase.from("cabins").delete().eq("id", data.id);
     console.error(storageError);

@@ -82,3 +82,10 @@ export default App;
 // UI - all the components not belonging to a feature or
 // that we might reuse
 // With styled components the css is only scoped to it's component, so no problems!
+
+// Abstraction, encapsulation, polymorphism, and inheritance
+// The prototype chain's behavior is less like inheritance and more like delegation.
+// Delegation is a programming pattern where an object, when asked to perform a task,
+// can perform the task itself or ask another object (its delegate) to perform the task on its behalf.
+// In many ways, delegation is a more flexible way of combining objects than inheritance
+// (for one thing, it's possible to change or completely replace the delegate at run time).

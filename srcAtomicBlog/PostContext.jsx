@@ -32,7 +32,7 @@ export function usePosts() {
 // custom context provider component:
 export default function PostProvider({ children }) {
   const [posts, setPosts] = useState(() =>
-    Array.from({ length: 30 }, () => createRandomPost())
+    Array.from({ length: 30 }, () => createRandomPost()),
   );
   // creates 30 random posts with mapFn - a function to call on every element of the array
   // If provided, every value to be added to the array is first passed through this function,
@@ -47,7 +47,7 @@ export default function PostProvider({ children }) {
       ? posts.filter((post) =>
           `${post.title} ${post.body}`
             .toLowerCase()
-            .includes(searchQuery.toLowerCase())
+            .includes(searchQuery.toLowerCase()),
         )
       : posts;
 
