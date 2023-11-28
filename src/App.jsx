@@ -31,12 +31,15 @@ function ProductItem({ product }) {
 
 function CompanyItem({ company, defaultVisibility }) {
   const [isVisible, setIsVisible] = useState(defaultVisibility);
+  console.log(defaultVisibility);
 
   return (
     <li
       className="company"
-      onMouseEnter={() => setIsVisible(true)}
+      // onMouseEnter={() => setIsVisible(true)}
+      onClick={() => setIsVisible(true)}
       onMouseLeave={() => setIsVisible(false)}
+      style={!isVisible ? { cursor: "pointer" } : {}}
     >
       <p className="company-name">{company.companyName}</p>
       {isVisible && (
@@ -48,7 +51,7 @@ function CompanyItem({ company, defaultVisibility }) {
   );
 }
 
-function List({ title, items }) {
+function List({ title, items, render }) {
   const [isOpen, setIsOpen] = useState(true);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -67,13 +70,18 @@ function List({ title, items }) {
           {isOpen ? <span>&or;</span> : <span>&and;</span>}
         </button>
       </div>
-      {isOpen && (
+
+      {/* This List now no longer knows what it is rendering - this is what we call
+      "inversion of control" - an important principle in software development */}
+      {isOpen && <ul className="list">{displayItems.map(render)}</ul>}
+
+      {/* {isOpen && (
         <ul className="list">
           {displayItems.map((product) => (
             <ProductItem key={product.productName} product={product} />
           ))}
         </ul>
-      )}
+      )} */}
 
       <button onClick={() => setIsCollapsed((isCollapsed) => !isCollapsed)}>
         {isCollapsed ? `Show all ${items.length}` : "Show less"}
@@ -86,15 +94,42 @@ export default function App() {
   return (
     <div>
       <h1>Render Props Demo</h1>
-
+      {/* The children prop is really not an option, here we need to pass 
+      not only the content but also instructions on how to use, 
+      that's where the "render props pattern" comes into play - it's all about
+      passing in a prop called render - a function, which the component uses to 
+      know what it should render and how to do it. Essentially - whenever we can't
+      directly pass jsx with children prop - we reach for the "render props pattern". 
+      Yet, nowadays, if we want to share logic, the way to go is custom hooks. */}
       <div className="col-2">
-        <List title="Products" items={products} />
+        <List
+          title="Products"
+          items={products}
+          render={(product) => {
+            return <ProductItem key={product.productName} product={product} />;
+          }}
+        />
+
+        {/* Now we can easily reuse the List, the render prop always needs to be a function */}
+        <List
+          title="Companies"
+          items={companies}
+          render={(company) => {
+            return (
+              <CompanyItem
+                key={company.companyName}
+                company={company}
+                defaultVisibility={false}
+              />
+            );
+          }}
+        />
       </div>
     </div>
   );
 }
 
-// LATER: Let's say we got this component from a 3rd-party library, 
+// LATER: Let's say we got this component from a 3rd-party library,
 // and can't change it. But we still want to add the 2 toggle functionalities to it
 function ProductList({ title, items }) {
   return (
