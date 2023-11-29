@@ -1,5 +1,7 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 
+// a convention - HOCs start with "with", because they return enhanced versions
 export default function withToggles(WrappedComponent) {
   return function List(props) {
     const [isOpen, setIsOpen] = useState(true);
@@ -15,7 +17,7 @@ export default function withToggles(WrappedComponent) {
     return (
       <div className="list-container">
         <div className="heading">
-          <h2>{props.title}</h2>
+          <h2 style={{ margin: "10px" }}>{props.title}</h2>
           <button onClick={toggleOpen}>
             {isOpen ? <span>&or;</span> : <span>&and;</span>}
           </button>
