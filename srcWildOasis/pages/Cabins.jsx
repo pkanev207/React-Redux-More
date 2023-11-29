@@ -3,9 +3,11 @@ import CabinTable from "../features/cabins/CabinTable";
 import Heading from "../ui/Heading";
 import Row from "../ui/Row";
 // import { getCabins } from "../services/apiCabins";
-import CreateCabinForm from "../features/cabins/CreateCabinForm";
-import { useState } from "react";
+// import CreateCabinForm from "../features/cabins/CreateCabinForm";
+// import { useState } from "react";
+import AddCabin from "../features/cabins/AddCabin";
 
+// We want the pages as simple as possible - without states or effects
 function Cabins() {
   // useEffect(function () {
   //   getCabins()
@@ -13,7 +15,7 @@ function Cabins() {
   //     .catch((e) => console.error(e));
   // });
 
-  const [showForm, setShowForm] = useState(false);
+  // const [showForm, setShowForm] = useState(false);
 
   return (
     <>
@@ -25,11 +27,12 @@ function Cabins() {
 
       <Row>
         <CabinTable />
-        <button onClick={() => setShowForm((showForm) => !showForm)}>
+        {/* <button onClick={() => setShowForm((showForm) => !showForm)}>
           Add new cabin
         </button>
 
-        {showForm && <CreateCabinForm />}
+        {showForm && <CreateCabinForm />} */}
+        <AddCabin />
       </Row>
     </>
   );
