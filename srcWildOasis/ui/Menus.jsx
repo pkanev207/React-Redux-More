@@ -88,7 +88,10 @@ function Toggle({ id }) {
   const { openId, close, open, setPosition } = useContext(MenusContext);
 
   function handleClick(e) {
+    // closest makes some DOM traversing, just to make sure we are
+    // on the button, not on the icon 🤓
     const rect = e.target.closest("button").getBoundingClientRect();
+    // console.log(rect);
     setPosition({
       x: window.innerWidth - rect.width - rect.x,
       y: rect.y + rect.height + 8,
@@ -110,6 +113,8 @@ function List({ id, children }) {
 
   if (openId !== id) return null;
 
+  // this element will also float on top of the ui, so it is always
+  // a good idea to use a portal in cases like that 🤓
   return createPortal(
     <StyledList position={position} ref={ref}>
       {children}

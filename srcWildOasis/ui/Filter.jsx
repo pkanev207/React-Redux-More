@@ -1,3 +1,4 @@
+// filter component can be anywhere we want
 import styled, { css } from "styled-components";
 
 const StyledFilter = styled.div`

@@ -91,7 +91,9 @@ function CabinRow({ cabin }) {
         <Modal>
           <Menus.Menu>
             <Menus.Toggle id={cabinId} />
-
+            {/* we have many Menus on the page, so we are using the cabinId 
+            to connect Toggle with the List to know which Toggle opens which List. 
+            And then the parent component will keep track which cabin will be displayed 🤓 */}
             <Menus.List id={cabinId}>
               <Menus.Button icon={<HiSquare2Stack />} onClick={handleDuplicate}>
                 Duplicate

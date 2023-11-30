@@ -42,6 +42,7 @@ function CabinTable() {
 
         <Table.Body
           data={cabins}
+          // "render props" use case - callback for map function 🤓
           render={(cabin) => <CabinRow cabin={cabin} key={cabin.id} />}
         />
       </Table>
