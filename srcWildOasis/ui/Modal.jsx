@@ -1,18 +1,9 @@
+/* eslint-disable react/prop-types */
+import { cloneElement, createContext, useContext, useState } from "react";
 import { createPortal } from "react-dom";
 import { HiXMark } from "react-icons/hi2";
 import styled from "styled-components";
-
-// A React Portal is a feature that essentially allows us to render an
-// element outside of the parent component DOM structure, while still
-// keeping the element in the original position of the component tree.
-// We can render a component anywhere we want inside the DOM three,
-// but still leave it in the same place in the React component tree,
-// so we can still pass all the props that we want
-// Generally used for elements that we want to stay on top of other elements.
-// (modal windows, tooltips, menus... allows to avoid conflict with
-// the css property overflow set to hidden, on the parent of the modal,
-// making sure that the modal will never be cut off..
-// All about reusability!!! 🎈📹🍺🌝)
+import { useOutsideClick } from "../hooks/useOutsideClick";
 
 const StyledModal = styled.div`
   position: fixed;
@@ -26,7 +17,6 @@ const StyledModal = styled.div`
   transition: all 0.5s;
 `;
 
-// give a blur effect to the background
 const Overlay = styled.div`
   position: fixed;
   top: 0;
@@ -64,22 +54,59 @@ const Button = styled.button`
   }
 `;
 
-function Modal({ children, onClose }) {
+// 1) Create a new context
+const ModalContext = createContext();
+
+// We should transform our modal to compound component, cause the state
+// management is lacking (AddCabin component should not take care about isOpenModal sate)
+// The Modal should know itself if is open or not eternally - encapsulation
+// And the actual rendering is lacking too... 🧒
+
+// 2) Create the parent component
+function Modal({ children }) {
+  const [openName, setOpenName] = useState("");
+
+  const close = () => setOpenName("");
+  // just renaming to be a bit more explicit 😉
+  const open = setOpenName;
+
+  return (
+    <ModalContext.Provider value={{ openName, close, open }}>
+      {children}
+    </ModalContext.Provider>
+  );
+}
+
+// 3) Create child components to help implementation
+function Open({ children, opens: opensWindowName }) {
+  const { open } = useContext(ModalContext);
+  // cloneElement lets you create a new React element using another element
+  // as a starting point. A new version of the children but with new props:
+  return cloneElement(children, { onClick: () => open(opensWindowName) });
+}
+
+function Window({ children, name }) {
+  const { openName, close } = useContext(ModalContext);
+  const ref = useOutsideClick(close);
+
+  if (name !== openName) return null;
+
   return createPortal(
-    // first - jsx to render
     <Overlay>
-      <StyledModal>
-        <Button onClick={onClose}>
+      <StyledModal ref={ref}>
+        <Button onClick={close}>
           <HiXMark />
         </Button>
 
-        <div>{children}</div>
+        <div>{cloneElement(children, { onCloseModal: close })}</div>
       </StyledModal>
     </Overlay>,
-    // the second argument is a DOM node - where we want to render
-    // document.querySelector(),
     document.body,
   );
 }
+
+// 4) Add child components as properties to parent component
+Modal.Open = Open;
+Modal.Window = Window;
 
 export default Modal;
