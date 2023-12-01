@@ -6,6 +6,7 @@ import Row from "../ui/Row";
 // import CreateCabinForm from "../features/cabins/CreateCabinForm";
 // import { useState } from "react";
 import AddCabin from "../features/cabins/AddCabin";
+import CabinTableOperations from "../features/cabins/CabinTableOperations";
 
 // We want the pages as simple as possible - without states or effects
 function Cabins() {
@@ -21,7 +22,8 @@ function Cabins() {
     <>
       <Row type="horizontal">
         <Heading as="h1">All cabins</Heading>
-        <p>Filter / Sort</p>
+        <CabinTableOperations />
+        {/* <p>Filter / Sort</p> */}
         {/* <img style={{ width: "300px" }} src="https://images.unsplash.com/photo-1621543597540-e9be3740352b?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"/> */}
       </Row>
 
